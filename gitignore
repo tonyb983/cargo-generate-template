@@ -1,0 +1,13 @@
+/.vscode
+/coverage
+/target
+**/*.rs.bk
+**/*~
+{% if is_library %}
+# Cargo.lock SHOULD NOT BE committed for library projects.
+Cargo.lock
+{% else %}
+# Cargo.lock SHOULD BE committed for binary / executable projects.
+# Cargo.lock
+{% endif %}
+
