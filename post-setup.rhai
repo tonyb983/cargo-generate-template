@@ -1,22 +1,21 @@
 // we can see existing variables.
 // note that template and Rhai variables are separate!
+debug("Running project post-setup script...");
+
 let is_library = variable::get("is_library");
-debug(`is_library: ${is_library}`);
-
+// debug(`is_library: ${is_library}`);
 let use_nightly = variable::get("use_nightly");
-debug(`use_nightly: ${use_nightly}`);
-
+// debug(`use_nightly: ${use_nightly}`);
 let gh_username = variable::get("gh_username");
-debug(`gh_username: ${gh_username}`);
-
+// debug(`gh_username: ${gh_username}`);
 let gh_workflows = variable::get("gh_workflows");
-debug(`gh_workflows: ${gh_workflows}`);
-
+// debug(`gh_workflows: ${gh_workflows}`);
 let project_name = variable::get("project-name");
-debug(`project_name: ${project_name}`);
-
+// debug(`project_name: ${project_name}`);
 let license = variable::get("license");
-debug(`license: ${license}`);
+// debug(`license: ${license}`);
+let use_vscode = variable::get("use_vscode");
+// debug(`use_vscode: ${use_vscode}`);
 
 switch license.to_upper() {
   "APACHE" => {
@@ -29,15 +28,18 @@ switch license.to_upper() {
     file::rename("LICENSE-MPL", "LICENSE");
   }
   "MIT + APACHE" => {}
-  "UNRESTRICTED" => {}
+  "NONE" => {}
   _ => {
     debug(`unknown license type: ${license}`);
   }
 }
 
 file::rename("README.PROJECT.md", "README.md");
-file::rename(".vscode/project.code-workspace", `.vscode/${project_name}.code-workspace`);
 file::rename("gitignore", ".gitignore");
+
+if use_vscode {
+  file::rename(".vscode/project.code-workspace", `.vscode/${project_name}.code-workspace`);
+}
 
 if gh_workflows {
   file::rename("wf/rust.yml", ".github/workflows/rust.yml");

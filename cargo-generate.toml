@@ -10,7 +10,7 @@ post = [ "post-setup.rhai" ]
 
 [placeholders.gh_username]
 type = "string"
-prompt = "Enter your github username:"
+prompt = "Enter your github username (used for setting up gh actions and readme badges):"
 default = "tonyb983"
 
 [placeholders.gh_workflows]
@@ -26,7 +26,7 @@ default = true
 [placeholders.license]
 type = "string"
 prompt = "What license would you like to use for this project?"
-choices = [ "MPL-2.0", "MIT", "Apache-2.0", "Apache-2.0 OR MIT", "Unrestricted"]
+choices = [ "MPL-2.0", "MIT", "Apache-2.0", "Apache-2.0 OR MIT", "None"]
 default = "MPL-2.0"
 
 [placeholders.use_nightly]
@@ -34,8 +34,16 @@ type = "bool"
 prompt = "Would you like to use the nightly toolchain?"
 default = true
 
+[placeholders.use_vscode]
+type = "bool"
+prompt = "Do you plan on using VSCode?"
+default = true
+
 [conditional.'is_library == true']
 ignore = [ "src/main.rs" ]
+
+[conditional.'use_vscode == false']
+ignore = [ ".vscode" ]
 
 [conditional.'is_library == false']
 ignore = [ "src/lib.rs", "src/bin" ]
@@ -66,7 +74,7 @@ ignore = [ "LICENSE-MPL" ]
 # include = [ "..." ]
 # exclude = [ "..." ]
 
-[conditional.'license == "Unrestricted"']
+[conditional.'license == "None"']
 ignore = [ "LICENSE-APACHE", "LICENSE-MPL", "LICENSE-MIT" ]
 # include = [ "..." ]
 # exclude = [ "..." ]
