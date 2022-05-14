@@ -4,9 +4,9 @@ authors = [ "{{authors}}" ]
 description = "Project description goes here."
 version = "0.1.0"
 repository = "https://www.github.com/{{gh_username}}/{{project-name}}"
-edition = "2021"
+edition = "2021"{% if license != "None" %}
 # This ensures that the license will show up correctly on crates.io, don't use `license-file`
-license = "{{license}}"
+license = "{{license}}"{% endif %}
 # See: https://doc.rust-lang.org/cargo/reference/manifest.html#the-keywords-field
 keywords = []
 # See: https://doc.rust-lang.org/cargo/reference/manifest.html#the-categories-field
@@ -18,7 +18,7 @@ default-run = "runner"{% endif %}
 [dev-dependencies]
 pretty_assertions = "1.2.1"
 
-# This setup (`features` and serde `dependencies`) adds a "serde" feature to the crate so end-users can serialize 
+# This setup (`features` and serde `dependencies`) adds a "serde" feature to the crate so end-users can serialize
 #   the types contained within. Use:
 #       `#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]`
 #   to conditionally apply the derive macros to the type.
@@ -28,7 +28,7 @@ serde = ["dep:serde"]
 # You can also optionally use features of dependencies, for example, if you were using the "bytes" crate,
 # you could change the above to:
 #   serde = ["dep:serde", "bytes/serde"]
-# which would include the "serde" dependency, and also activate the "serde" feature of the "bytes" crate 
+# which would include the "serde" dependency, and also activate the "serde" feature of the "bytes" crate
 # See: https://doc.rust-lang.org/cargo/reference/features.html
 
 [dependencies]

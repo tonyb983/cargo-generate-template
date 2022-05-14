@@ -23,3 +23,9 @@ cargo generate tonyb983/cargo-generate-template
 - `README.PROJECT.md` - A skeleton readme for the newly generated project
 - `wf/` - Holds the workflows so that they are not run when the template is updated (there's probably a better way to do this but oh well)
 - `.vscode/` - Creates a `code-workspace` file to use with VSCode. Can be deleted if you plan on using a different editor/IDE
+
+## Todo-List
+- [ ] Add support for repo hosts other than [Github](https://www.github.com)
+- [x] Add support for more licenses
+    - [ ] Are there any others that should be added?
+- [ ] Find more cool badges to pad that README file :blush:

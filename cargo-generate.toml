@@ -1,43 +1,43 @@
 [template]
 cargo_generate_version = ">=0.10.0"
-ignore = [ "README.md", ".gitignore" ]
+ignore = [ "README.md", ".gitignore", ".vscode/cargo-generate-template.code-workspace" ]
 # include = [ "..." ]
 # exclude = [ "..." ]
 
 [hooks]
-# pre = [ "..." ]
+pre = [ "pre-setup.rhai" ]
 post = [ "post-setup.rhai" ]
 
-[placeholders.gh_username]
-type = "string"
-prompt = "Enter your github username (used for setting up gh actions and readme badges):"
-default = "tonyb983"
+# [placeholders.gh_username]
+# type = "string"
+# prompt = "Enter your github username (used for setting up gh actions and readme badges):"
+# default = "tonyb983"
 
-[placeholders.gh_workflows]
-type = "bool"
-prompt = "Would you like to enable Github Actions for linting, testing, and code coverage?"
-default = true
+# [placeholders.gh_workflows]
+# type = "bool"
+# prompt = "Would you like to enable Github Actions for linting, testing, and code coverage?"
+# default = true
 
-[placeholders.is_library]
-type = "bool"
-prompt = "Would you like this project to be a library (otherwise it is a binary)?"
-default = true
+# [placeholders.is_library]
+# type = "bool"
+# prompt = "Would you like this project to be a library (otherwise it is a binary)?"
+# default = true
 
-[placeholders.license]
-type = "string"
-prompt = "What license would you like to use for this project?"
-choices = [ "MPL-2.0", "MIT", "Apache-2.0", "Apache-2.0 OR MIT", "None"]
-default = "MPL-2.0"
+# [placeholders.license]
+# type = "string"
+# prompt = "What license would you like to use for this project?"
+# choices = [ "MPL-2.0", "MIT", "Apache-2.0", "Apache-2.0 OR MIT", "None"]
+# default = "MPL-2.0"
 
-[placeholders.use_nightly]
-type = "bool"
-prompt = "Would you like to use the nightly toolchain?"
-default = true
+# [placeholders.use_nightly]
+# type = "bool"
+# prompt = "Would you like to use the nightly toolchain?"
+# default = true
 
-[placeholders.use_vscode]
-type = "bool"
-prompt = "Do you plan on using VSCode?"
-default = true
+# [placeholders.use_vscode]
+# type = "bool"
+# prompt = "Do you plan on using VSCode?"
+# default = true
 
 [conditional.'is_library == true']
 ignore = [ "src/main.rs" ]
@@ -53,28 +53,3 @@ ignore = [ "wf/rust_nightly.yml" ]
 
 [conditional.'gh_workflows == false']
 ignore = [ ".github", "wf" ]
-
-[conditional.'license == "MPL-2.0"']
-ignore = [ "LICENSE-APACHE", "LICENSE-MIT" ]
-# include = [ "..." ]
-# exclude = [ "..." ]
-
-[conditional.'license == "MIT"']
-ignore = [ "LICENSE-APACHE", "LICENSE-MPL" ]
-# include = [ "..." ]
-# exclude = [ "..." ]
-
-[conditional.'license == "Apache-2.0"']
-ignore = [ "LICENSE-MPL", "LICENSE-MIT" ]
-# include = [ "..." ]
-# exclude = [ "..." ]
-
-[conditional.'license == "Apache-2.0 OR MIT"']
-ignore = [ "LICENSE-MPL" ]
-# include = [ "..." ]
-# exclude = [ "..." ]
-
-[conditional.'license == "None"']
-ignore = [ "LICENSE-APACHE", "LICENSE-MPL", "LICENSE-MIT" ]
-# include = [ "..." ]
-# exclude = [ "..." ]
