@@ -102,7 +102,7 @@ switch license {
 
 // Ask whether the user would like to setup benchmarking support. Default = true
 // Adds the `criterion` dev-dependency, and the `benches` folder.
-let use_benches = variable::prompt("Would you like to set up a benchmarking support?", true);
+let use_benches = variable::prompt("Would you like to set up benchmarking support?", true);
 variable::set("use_benches", use_benches);
 log(`script use_benches = ${use_benches}`);
 log(` outer use_benches = ${variable::get("use_benches")}`);
