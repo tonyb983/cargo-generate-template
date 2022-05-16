@@ -1,0 +1,3 @@
+# {{project-name}} Integration Tests
+
+While unit tests test individual "units" of code and are interspersed throughout a rust codebase, integration tests test the public API of your library. These should be single `.rs` files with one or more tests inside, each with the `#[test]` attribute. If you need to use some common set-up or tear-down code across multiple tests, one way this can be accomplished is to put the code into a `common.rs` file and include it as a module within the test file(s). An example of this has been included in this barebones integration test setup.

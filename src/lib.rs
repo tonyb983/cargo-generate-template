@@ -37,8 +37,6 @@
     box_patterns,
     box_syntax,
     inline_const,
-    // This feature is "incomplete" and therefore more experimental than the others.
-    // inline_const_pat,
     const_trait_impl,
     control_flow_enum,
     concat_idents,
@@ -50,22 +48,26 @@
     let_chains,
     let_else,
     lint_reasons,
+    no_coverage,
     once_cell,
     pattern,
     round_char_boundary,
     test,
     try_blocks
-)]
-
+)]{% else %}
 // This enables a coverage attribute to exclude code from coverage numbers, see test function below for usage example.
-// This can also be enabled using the above feature list (with feature(no_coverage)`), in which case it becomes
-// easier to disable coverage for a function by simply adding 
-//     #[no_coverage] 
+// This can also be enabled globally using the NIGHTLY feature `no_coverage` (`#![feature(no_coverage)]`), in which case it becomes
+// easier to disable coverage for a function by simply adding
+//     #[no_coverage]
 // to the function, instead of having to use
 //     #[cfg_attr(coverage, no_coverage)]
-#![cfg_attr(coverage, feature(no_coverage))]{% endif %}
+#![cfg_attr(coverage, feature(no_coverage))]
+{% endif %}
 
-mod utils;
+{% if use_flamegraph %}
+mod flame_example;{% endif %}
+mod utils;{%if use_benches %}
+pub use utils::calculate_fib;{% endif %}
 
 fn test_function() -> String {
     "Hello from {{project-name}}::test_function!".to_string()
@@ -76,16 +78,25 @@ mod tests {
     use super::*;
     use pretty_assertions::{assert_eq, assert_ne};
 
-    {% if use_nightly %}#[cfg_attr(coverage, no_coverage)]
+    {% if use_nightly %}#[no_coverage]{% else %}#[cfg_attr(coverage, no_coverage)]
     {% endif %}#[test]
     fn good() {
         assert_eq!(test_function(), "Hello from {{project-name}}::test_function!");
     }
 
-    {% if use_nightly %}#[cfg_attr(coverage, no_coverage)]
+    {% if use_nightly %}#[no_coverage]{% else %}#[cfg_attr(coverage, no_coverage)]
     {% endif %}#[test]
     #[should_panic]
     fn bad() {
         assert_ne!(test_function(), "Hello from {{project-name}}::test_function!");
-    }
+    }{% if use_flamegraph %}
+
+    // This test will run the flamegraph generation code (useful for library projects).
+    // It is being ignored so as not to run on every test run, such as in CI environments, but this doesnt have to be the case.
+    {% if use_nightly %}#[no_coverage]{% else %}#[cfg_attr(coverage, no_coverage)]
+    {% endif %}#[test]
+    #[ignore]
+    fn generate_flamegraphs() {
+        flame_example::flamegraph_main();
+    }{% endif %}
 }

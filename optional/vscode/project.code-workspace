@@ -1,0 +1,21 @@
+{
+    "folders": [
+        {
+            "name": "{{project-name}}",
+            "path": ".."
+        }
+    ],
+    "extensions": {
+        "recommendations": [
+            "panicbit.cargo",
+            "cargo-inspect-vscode.cargo-inspect",
+            "vadimcn.vscode-lldb",
+            "serayuzgur.crates",
+            "tamasfe.even-better-toml",
+            "dustypomerleau.rust-syntax",
+            "Swellaby.vscode-rust-test-adapter",
+            "hdevalke.rust-test-lens",
+            "matklad.rust-analyzer"
+        ]
+    }
+}

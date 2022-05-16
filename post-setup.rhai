@@ -20,6 +20,12 @@ let project_name = variable::get("project-name");
 debug(`project_name: ${project_name}`);
 let use_vscode = variable::get("use_vscode");
 debug(`use_vscode: ${use_vscode}`);
+let use_benches = variable::get("use_benches");
+debug(`use_benches: ${use_benches}`);
+let use_integration = variable::get("use_integration");
+debug(`use_integration: ${use_integration}`);
+let use_flamegraph = variable::get("use_flamegraph");
+debug(`use_flamegraph: ${use_flamegraph}`);
 
 // Set project `README` file
 file::rename("README.PROJECT.md", "README.md");
@@ -36,23 +42,35 @@ if is_library {
 
 // If using VSCode, keep the .vscode directory and rename the code-workspace file, otherwise delete the directory
 if use_vscode {
-  file::rename(".vscode/project.code-workspace", `.vscode/${project_name}.code-workspace`);
-} else {
-  file::delete(".vscode");
+  file::rename("optional/vscode/project.code-workspace", `optional/vscode/${project_name}.code-workspace`);
+  file::rename("optional/vscode", ".vscode");
 }
 
 // If using GH Actions, move workflow files from `wf` folder to `.github/workflows/`
 if gh_workflows {
-  file::rename("wf/coverage.yml", ".github/workflows/coverage.yml");
+  file::rename("optional/wf/coverage.yml", ".github/workflows/coverage.yml");
   //  Delete `rust_nightly.yml` if not using the nightly toolchain, otherwise delete `rust.yml`
   if use_nightly {
-    file::rename("wf/rust_nightly.yml", ".github/workflows/rust_nightly.yml");
+    file::rename("optional/wf/rust_nightly.yml", ".github/workflows/rust_nightly.yml");
   } else {
-    file::rename("wf/rust.yml", ".github/workflows/rust.yml");
+    file::rename("optional/wf/rust.yml", ".github/workflows/rust.yml");
   }
-  file::delete("wf");
   file::delete(".github/workflows/.gitkeep");
 } else {
-  file::delete("wf");
   file::delete(".github");
 }
+
+if use_benches {
+  file::rename("optional/benches", "benches");
+}
+
+if use_integration {
+  file::rename("optional/tests", "tests");
+}
+
+if use_flamegraph {
+  file::rename("optional/flames", "flames");
+  file::rename("optional/flame_example.rs", "src/flame_example.rs");
+}
+
+file::delete("optional");

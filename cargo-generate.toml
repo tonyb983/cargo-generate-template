@@ -1,6 +1,6 @@
 [template]
 cargo_generate_version = ">=0.10.0"
-ignore = [ "README.md", ".gitignore", ".vscode/cargo-generate-template.code-workspace" ]
+ignore = [ "README.md", ".gitignore", ".vscode" ]
 # include = [ "..." ]
 # exclude = [ "..." ]
 

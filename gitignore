@@ -1,5 +1,6 @@
 /.vscode
-/coverage
+/coverage {% if use_flamegraph %}
+/flames {% endif %}
 /target
 **/*.rs.bk
 **/*~
@@ -10,4 +11,3 @@ Cargo.lock
 # Cargo.lock SHOULD BE committed for binary / executable projects.
 # Cargo.lock
 {% endif %}
-

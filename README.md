@@ -26,8 +26,11 @@ cargo generate tonyb983/cargo-generate-template
 
 ## Todo-List
 - [ ] Add support for repo hosts other than [Github](https://www.github.com)
+    - This will be a bit complicated as many of the README badges are set up through github
 - [x] Add support for more licenses
     - [ ] Are there any others that should be added?
-- [ ] Add option for adding tests (integration tests)
-- [ ] Add option for adding benches (with criterion probably?)
+- [x] Add option for adding tests (integration tests)
+- [x] Add option for adding benches (with criterion probably?)
+- [x] Add flamegraph generation example
+- [ ] Add option for adding examples folder?
 - [ ] Find more cool badges to pad that README file :blush:

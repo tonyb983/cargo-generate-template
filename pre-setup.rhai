@@ -16,7 +16,7 @@ let LICENSES = #{
   "GPLv2": "LICENSE-GPL2",
   "GPLv3": "LICENSE-GPL3",
   "MIT": "LICENSE-MIT",
-  "MPLv2": "LICENSE-MPLv2",
+  "MPL-2.0": "LICENSE-MPLv2",
   "Unlicense": "LICENSE-UNLICENSE",
   "None": "",
 };
@@ -68,10 +68,29 @@ switch license {
     file::delete("licenses");
   }
   _ => {
-    file::rename(`licenses/LICENSE-${license}`, "LICENSE");
+    file::rename(`licenses/${LICENSES[license]}`, "LICENSE");
     file::delete("licenses");
   }
   // Previously this switch held a full listing of each license, but since we are giving the user
   // a closed set of choices (the user must choose, they cannot type in a license) this should work
   // completely fine. There SHOULD be no possible way to get a license string other than what we expect.
 }
+
+// Ask whether the user would like to setup benchmarking support. Default = true
+// Adds the `criterion` dev-dependency, and the `benches` folder.
+let use_benches = variable::prompt("Would you like to set up a benchmarking support?", true);
+variable::set("use_benches", use_benches);
+
+// If library, ask whether the user would like to set up integration test support. Default = true
+// Adds the `tests` folder.
+if project_kind == "library" {
+    let use_integration = variable::prompt("Would you like to include integration tests for your library?", true);
+    variable::set("use_integration", use_integration);
+} else {
+    variable::set("use_integration", false);
+}
+
+// Ask whether the user would like to setup benchmarking support. Default = true
+// Adds the `flame` and `flamer` optional dependencies, and the `flame_example` file.
+let use_flamegraph = variable::prompt("Would you like to set up flamegraph support and examples?", true);
+variable::set("use_flamegraph", use_flamegraph);
