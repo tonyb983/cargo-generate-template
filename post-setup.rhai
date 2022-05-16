@@ -41,13 +41,18 @@ if use_vscode {
   file::delete(".vscode");
 }
 
-// If using GH Actions, move workflow files from `wf` folder to `.github/workflows/`. Delete `rust_nightly` if not using the nightly toolchain.
+// If using GH Actions, move workflow files from `wf` folder to `.github/workflows/`
 if gh_workflows {
-  file::rename("wf/rust.yml", ".github/workflows/rust.yml");
   file::rename("wf/coverage.yml", ".github/workflows/coverage.yml");
+  //  Delete `rust_nightly.yml` if not using the nightly toolchain, otherwise delete `rust.yml`
   if use_nightly {
     file::rename("wf/rust_nightly.yml", ".github/workflows/rust_nightly.yml");
+  } else {
+    file::rename("wf/rust.yml", ".github/workflows/rust.yml");
   }
   file::delete("wf");
   file::delete(".github/workflows/.gitkeep");
+} else {
+  file::delete("wf");
+  file::delete(".github");
 }
