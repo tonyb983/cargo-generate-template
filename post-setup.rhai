@@ -1,29 +1,35 @@
 print("Running project post-setup script...");
+print!("🚧 Cleaning up the last little odds and ends... 🚧");
 
 let is_library = variable::get("is_library");
-// debug(`is_library: ${is_library}`);
+debug(`is_library: ${is_library}`);
 let use_nightly = variable::get("use_nightly");
-// debug(`use_nightly: ${use_nightly}`);
-let gh_username = variable::get("gh_username");
-// debug(`gh_username: ${gh_username}`);
+debug(`use_nightly: ${use_nightly}`);
 let gh_workflows = variable::get("gh_workflows");
-// debug(`gh_workflows: ${gh_workflows}`);
+debug(`gh_workflows: ${gh_workflows}`);
 let project_name = variable::get("project-name");
-// debug(`project_name: ${project_name}`);
-// let license = variable::get("license");
-// debug(`license: ${license}`);
+debug(`project_name: ${project_name}`);
 let use_vscode = variable::get("use_vscode");
-// debug(`use_vscode: ${use_vscode}`);
+debug(`use_vscode: ${use_vscode}`);
 
 file::rename("README.PROJECT.md", "README.md");
 file::rename("gitignore", ".gitignore");
 
+if is_library {
+    file::delete("src/main.rs");
+} else {
+    file::delete("src/lib.rs");
+    file::delete("src/bin");
+}
+
+// If using VSCode, keep the .vscode directory and rename the code-workspace file, otherwise delete the directory
 if use_vscode {
   file::rename(".vscode/project.code-workspace", `.vscode/${project_name}.code-workspace`);
 } else {
   file::delete(".vscode");
 }
 
+// If using GH Actions, move workflow files from `wf` folder to `.github/workflows/`. Delete `rust_nightly` if not using the nightly toolchain.
 if gh_workflows {
   file::rename("wf/rust.yml", ".github/workflows/rust.yml");
   file::rename("wf/coverage.yml", ".github/workflows/coverage.yml");

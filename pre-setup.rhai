@@ -1,3 +1,9 @@
+//! Pre-Setup Script
+//!
+//! I've chosen to use this to prompt the user for input rather than relying on `cargo-generate.toml`, it
+//! bugged me a little bit that on each run, the order of prompts seemed to be randomized, this way they will
+//! always follow the same order so as to be more consistent.
+
 print("Running project pre-setup script...");
 print("🌟 Welcome to the only Rust project template you'll ever need. 🌟");
 
@@ -15,24 +21,34 @@ let LICENSES = #{
   "None": "",
 };
 
+/// Prompt for project type, this is done by cargo generate but I live having control so whatev. Default = 'library'
 let project_kind = variable::prompt("Is this project a library or binary?", "library", ["library", "binary"]);
 variable::set("is_library", project_kind == "library");
 
+/// Prompt for GH Username, used up repository badges and the GH Actions. Default = 'tonyb983' because i'm self-centered
+/// TODO: Should / can this be made optional? Also, should we maybe prompt whether the user wants to keep all of the README badges?
 let gh_username = variable::prompt("Please enter your github username (used for setting up gh actions and readme badges):", "tonyb983");
 variable::set("gh_username", gh_username);
 
+/// Ask whether user would like to set up github actions for check + test + link & code coverage. Default = 'true'
+/// TODO: Should this be changed to default 'false'?
 let gh_workflows = variable::prompt("Would you like to enable Github Actions for linting, testing, and code coverage?", true);
 variable::set("gh_workflows", gh_workflows);
 
+/// Ask whether the user would like to use the nightly toolchain instead of the stable toolchain. Default = 'true'
+/// TODO: Should this be changed to default 'false'?
 let use_nightly = variable::prompt("Would you like to use the nightly toolchain?", true);
 variable::set("use_nightly", use_nightly);
 
+/// Ask whether the user is going to use VSCode, if so we keep the .vscode folder. Default = 'true'
 let use_vscode = variable::prompt("Are you planning on using VSCode as your editor for this project?", true);
 variable::set("use_vscode", use_vscode);
 
+/// Prompt for choice of license, this is used to keep the correct license file and delete the unnecessary ones. Default = 'None'
 let license = variable::prompt("What license would you like to use for the project?", "None", LICENSES.keys());
 variable::set("license", license);
 
+/// Switch on license to rename and move the chosen license file, and delete the others
 switch license {
   "None" => {
     file::delete("licenses");
@@ -46,39 +62,7 @@ switch license {
     file::rename(`licenses/LICENSE-${license}`, "LICENSE");
     file::delete("licenses");
   }
-  // "BSL1" => {
-  //   file::rename("licenses/LICENSE-BSL1", "LICENSE");
-  //   file::delete("licenses");
-  // }
-  // "BSD2" => {
-  //   file::rename("licenses/LICENSE-BSD2", "LICENSE");
-  //   file::delete("licenses");
-  // }
-  // "BSD3" => {
-  //   file::rename("licenses/LICENSE-BSD3", "LICENSE");
-  //   file::delete("licenses");
-  // }
-  // "GPLv2" => {
-  //   file::rename("licenses/LICENSE-GPLv2", "LICENSE");
-  //   file::delete("licenses");
-  // }
-  // "GPLv3" => {
-  //   file::rename("licenses/LICENSE-GPLv3", "LICENSE");
-  //   file::delete("licenses");
-  // }
-  // "MIT" => {
-  //   file::rename("licenses/LICENSE-MIT", "LICENSE");
-  //   file::delete("licenses");
-  // }
-  // "MPLv2" => {
-  //   file::rename("licenses/LICENSE-MPLv2", "LICENSE");
-  //   file::delete("licenses");
-  // }
-  // "Unlicense" => {
-  //   file::rename("licenses/LICENSE-UNLICENSE", "LICENSE");
-  //   file::delete("licenses");
-  // }
-  // _ => {
-  //   debug(`unknown license type: ${license}`);
-  // }
+  // Previously this switch held a full listing of each license, but since we are giving the user
+  // a closed set of choices (the user must choose, they cannot type in a license) this should work
+  // completely fine. There SHOULD be no possible way to get a license string other than what we expect.
 }
