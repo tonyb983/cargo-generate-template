@@ -8,7 +8,7 @@
 //! variables, but the conditional segments inside cargo-generate.toml do NOT.
 
 fn log(x) {
-    const DEBUG = false;
+    const DEBUG = true;
     if DEBUG {
         debug(x);
     }
