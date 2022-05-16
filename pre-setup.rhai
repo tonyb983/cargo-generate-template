@@ -4,7 +4,7 @@
 //! bugged me a little bit that on each run, the order of prompts seemed to be randomized, this way they will
 //! always follow the same order so as to be more consistent.
 
-print("Running project pre-setup script...");
+// print("Running project pre-setup script...");
 print("🌟 Welcome to the only Rust project template you'll ever need. 🌟");
 
 let LICENSES = #{

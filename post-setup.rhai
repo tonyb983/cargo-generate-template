@@ -7,25 +7,25 @@
 //! which is why the conditional segments of code throughout the project work okay with pre-setup prompt
 //! variables, but the conditional segments inside cargo-generate.toml do NOT.
 
-print("Running project post-setup script...");
+// print("Running project post-setup script...");
 print!("🚧 Cleaning up the last little odds and ends... 🚧");
 
 let is_library = variable::get("is_library");
-debug(`is_library: ${is_library}`);
+// debug(`is_library: ${is_library}`);
 let use_nightly = variable::get("use_nightly");
-debug(`use_nightly: ${use_nightly}`);
+// debug(`use_nightly: ${use_nightly}`);
 let gh_workflows = variable::get("gh_workflows");
-debug(`gh_workflows: ${gh_workflows}`);
+// debug(`gh_workflows: ${gh_workflows}`);
 let project_name = variable::get("project-name");
-debug(`project_name: ${project_name}`);
+// debug(`project_name: ${project_name}`);
 let use_vscode = variable::get("use_vscode");
-debug(`use_vscode: ${use_vscode}`);
+// debug(`use_vscode: ${use_vscode}`);
 let use_benches = variable::get("use_benches");
-debug(`use_benches: ${use_benches}`);
+// debug(`use_benches: ${use_benches}`);
 let use_integration = variable::get("use_integration");
-debug(`use_integration: ${use_integration}`);
+// debug(`use_integration: ${use_integration}`);
 let use_flamegraph = variable::get("use_flamegraph");
-debug(`use_flamegraph: ${use_flamegraph}`);
+// debug(`use_flamegraph: ${use_flamegraph}`);
 
 // Set project `README` file
 file::rename("README.PROJECT.md", "README.md");
