@@ -8,7 +8,7 @@
 //! variables, but the conditional segments inside cargo-generate.toml do NOT.
 
 fn log(x) {
-    const DEBUG = true;
+    const DEBUG = false;
     if DEBUG {
         debug(x);
     }
@@ -95,6 +95,7 @@ if use_flamegraph {
   file::rename("optional/flames", "flames");
   log("moving flame_example.rs");
   file::rename("optional/flame_example.rs", "src/flame_example.rs");
+  file::delete("flames/.gitkeep");
 }
 
 log("deleting optional");

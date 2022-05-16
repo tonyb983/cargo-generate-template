@@ -5,7 +5,7 @@
 //! always follow the same order so as to be more consistent.
 
 fn log(x) {
-    const DEBUG = true;
+    const DEBUG = false;
     if DEBUG {
         debug(x);
     }
