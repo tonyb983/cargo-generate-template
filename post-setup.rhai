@@ -91,8 +91,9 @@ if use_integration {
 
 log("checking use_flamegraph");
 if use_flamegraph {
-  log("setting up flame stuff");
+  log("moving 'flames' dir");
   file::rename("optional/flames", "flames");
+  log("moving flame_example.rs");
   file::rename("optional/flame_example.rs", "src/flame_example.rs");
 }
 
