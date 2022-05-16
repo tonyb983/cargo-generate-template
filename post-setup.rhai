@@ -1,3 +1,12 @@
+//! Post-Setup Script
+//!
+//! This cleans up any unnecessary files based on the prompts run during the pre-setup script.
+//! I have to do this here since evidently `cargo-generate.toml` does not honor conditionals
+//! that are set during the pre-setup script. I'm guess the order of execution goes: 1) cargo-generate.toml,
+//! 2) pre-setup script, 3) project-wide text substitution and conditional segments, 4) post-setup script,
+//! which is why the conditional segments of code throughout the project work okay with pre-setup prompt
+//! variables, but the conditional segments inside cargo-generate.toml do NOT.
+
 print("Running project post-setup script...");
 print!("🚧 Cleaning up the last little odds and ends... 🚧");
 
@@ -12,9 +21,12 @@ debug(`project_name: ${project_name}`);
 let use_vscode = variable::get("use_vscode");
 debug(`use_vscode: ${use_vscode}`);
 
+// Set project `README` file
 file::rename("README.PROJECT.md", "README.md");
+// Set project `.gitignore` file
 file::rename("gitignore", ".gitignore");
 
+// Delete the appropriate "main" file based on whether this is a library or binary, and if binary delete the "default-runner"
 if is_library {
     file::delete("src/main.rs");
 } else {

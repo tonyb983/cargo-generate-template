@@ -21,34 +21,43 @@ let LICENSES = #{
   "None": "",
 };
 
-/// Prompt for project type, this is done by cargo generate but I live having control so whatev. Default = 'library'
+// Here we set up the conditional variables that determine what files are kept and what segments are inserted
+// into the templated files.
+
+// Prompt for project type, this is done by cargo generate but I live having control so whatever. Default = 'library'
+// Originally: placeholders.is_library = { type = "bool", prompt = "...", default = true }
 let project_kind = variable::prompt("Is this project a library or binary?", "library", ["library", "binary"]);
 variable::set("is_library", project_kind == "library");
 
-/// Prompt for GH Username, used up repository badges and the GH Actions. Default = 'tonyb983' because i'm self-centered
-/// TODO: Should / can this be made optional? Also, should we maybe prompt whether the user wants to keep all of the README badges?
+// Originally: placeholders.gh_username = { type = "string", prompt = "...", default = "tonyb983" }
+// TODO: Should / can this be made optional? Also, should we maybe prompt whether the user wants to keep all of the README badges?
 let gh_username = variable::prompt("Please enter your github username (used for setting up gh actions and readme badges):", "tonyb983");
 variable::set("gh_username", gh_username);
 
-/// Ask whether user would like to set up github actions for check + test + link & code coverage. Default = 'true'
-/// TODO: Should this be changed to default 'false'?
+// Originally: placeholders.gh_workflows = { type = "bool", prompt = "...", default = true }
+// TODO: Should this be changed to default 'false'?
 let gh_workflows = variable::prompt("Would you like to enable Github Actions for linting, testing, and code coverage?", true);
 variable::set("gh_workflows", gh_workflows);
 
-/// Ask whether the user would like to use the nightly toolchain instead of the stable toolchain. Default = 'true'
-/// TODO: Should this be changed to default 'false'?
+// Ask whether the user would like to use the nightly toolchain instead of the stable toolchain. Default = 'true'
+// Originally: placeholders.use_nightly = { type = "bool", prompt = "...", default = true }
+// TODO: Should this be changed to default 'false'?
 let use_nightly = variable::prompt("Would you like to use the nightly toolchain?", true);
 variable::set("use_nightly", use_nightly);
 
-/// Ask whether the user is going to use VSCode, if so we keep the .vscode folder. Default = 'true'
+// Ask whether the user is going to use VSCode, if so we keep the .vscode folder. Default = 'true'
+// Originally: placeholders.use_vscode = { type = "bool", prompt = "...", default = true }
 let use_vscode = variable::prompt("Are you planning on using VSCode as your editor for this project?", true);
 variable::set("use_vscode", use_vscode);
 
-/// Prompt for choice of license, this is used to keep the correct license file and delete the unnecessary ones. Default = 'None'
+// Prompt for choice of license, this is used to keep the correct license file and delete the unnecessary ones. Default = 'None'
+// Originally: placeholders.license = { type = "string", prompt = "...", default = "MPL-2.0", choices = [ ... ] }
 let license = variable::prompt("What license would you like to use for the project?", "None", LICENSES.keys());
 variable::set("license", license);
 
-/// Switch on license to rename and move the chosen license file, and delete the others
+// Switch on license to rename and move the chosen license file, and delete the others
+// First we handle the special cases of 'None' & 'Apache-2.0 OR MIT', otherwise we use
+// the `LICENSES` map.
 switch license {
   "None" => {
     file::delete("licenses");
