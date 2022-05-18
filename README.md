@@ -32,5 +32,6 @@ cargo generate tonyb983/cargo-generate-template
 - [x] Add option for adding tests (integration tests)
 - [x] Add option for adding benches (with criterion probably?)
 - [x] Add flamegraph generation example
+- [ ] Add `puffin` profiling example? (similar to the flamegraph example)
 - [ ] Add option for adding examples folder?
 - [ ] Find more cool badges to pad that README file :blush:
