@@ -10,17 +10,16 @@
 //! See: `flame::dump_html`, `flame::dump_json`, `flame::dump_stdout`.
 //!
 //! Gating the flamegraph code behind a feature is also technically optional but should always be done to ensure that
-//! the function call overhead is only added when the performance is actually being measured. I always choose `flame_on`
-//! as my feature name but this can be anything you want it to be.
+//! the function call overhead is only added when the performance is actually being measured.
 
 /// This attribute will ensure that the flame portion of the code is only applied when the
-/// `flame_on` feature is enabled. This feature can be renamed to whatever you like, except
-/// it cannot be the name of a dependency, so `flame` and `flamer` are out.
+/// `flame` feature is enabled. This feature can be renamed to whatever you like, but
+/// make sure you read [the rules regarding features](https://doc.rust-lang.org/cargo/reference/features.html).
 /// Due to the attribute, this code will automatically have the flame guard code inserted.
 /// It will be registered under the name `flame_example::attribute_flame` due to the string
 /// inside of `flamer::flame(..)`, without this it would only show up as `attribute_flame`
 /// which can be problematic for bigger projects.
-#[cfg_attr(feature = "flame_on", flamer::flame("flame_example"))]
+#[cfg_attr(feature = "flame", flamer::flame("flame_example"))]
 pub fn attribute_flame() {
     println!("Hello from attribute_flame");
 }
@@ -29,7 +28,15 @@ pub fn attribute_flame() {
 /// when using the `flamer` library. The top function will show up as
 /// `flame_example::flamer_with_locals` and the local functions will show up as
 /// `flame_example::flamer_with_locals::local_functions_too`.
-#[cfg_attr(feature = "flame_on", flamer::flame("flame_example"))]
+///
+/// The second `cfg_attr` is required since the `flamer::flame` attribute adds generated code
+/// before any of your own code, so clippy will complain about items after statements.
+/// This can also be fixed project-wide by adding the following to your `lib.rs` or `main.rs`:
+/// ```rust
+/// #![cfg_attr(feature = "flame", allow(clippy::items_after_statements))]
+/// ```
+#[cfg_attr(feature = "flame", flamer::flame("flame_example"))]
+#[cfg_attr(feature = "flame", allow(clippy::items_after_statements))]
 pub fn flamer_with_locals() {
     fn local_functions_too() {
         println!("Hello from local_functions_too");
@@ -51,7 +58,7 @@ pub fn flamer_with_locals() {
 /// in mind, your variable should *probably* still be **PREFIXED** with `_`, so that clippy does not complain
 /// about unused variables, but that of course is up to you.
 pub fn manual_flame() {
-    #[cfg(feature = "flame_on")]
+    #[cfg(feature = "flame")]
     let _fg = flame::start_guard("flame_example::manual_flame");
     println!("Hello from manual_flame");
 }
@@ -59,12 +66,12 @@ pub fn manual_flame() {
 /// This example demonstrates how scopes can be layered for more granular measurements, and
 /// multiple ways it can be accomplished.
 pub fn layered_scopes() {
-    #[cfg(feature = "flame_on")]
+    #[cfg(feature = "flame")]
     let _fg = flame::start_guard("flame_example::layered_scopes");
 
     // Scoped version
     {
-        #[cfg(feature = "flame_on")]
+        #[cfg(feature = "flame")]
         let _fg2 = flame::start_guard("flame_example::layered_scopes::expensive_operation_1");
         // Assume this is one of many expensive operations done by this function
         for _ in 0..1_000_000 {
@@ -73,13 +80,13 @@ pub fn layered_scopes() {
     } // _fg2 is dropped here, running the flamegraph capture code
 
     // Manual drop version
-    #[cfg(feature = "flame_on")]
+    #[cfg(feature = "flame")]
     let _fg3 = flame::start_guard("flame_example::layered_scopes::expensive_operation_2");
     for _ in 0..1_000_000 {
         let _v = Vec::<(usize, usize, usize, usize)>::with_capacity(4_000);
     }
     // Drop so the capture code is run now
-    #[cfg(feature = "flame_on")]
+    #[cfg(feature = "flame")]
     drop(_fg3);
 
     // Do some other stuff here maybe.
@@ -92,14 +99,14 @@ pub fn layered_scopes() {
 /// This example just demonstrates using the `module_path!` macro to make things a tiny bit easier,
 /// especially for deeply nested modules.
 pub fn using_module_path() {
-    #[cfg(feature = "flame_on")]
+    #[cfg(feature = "flame")]
     let _fg = flame::start_guard(format!("{}::using_module_path", module_path!()));
     println!("Hello from using_module_path");
 }
 
 /// This function demonstrates how to actually get the flamegraph data output. All of the above code sets up
 /// the capturing, but without actually requesting the output, nothing will be generated.
-#[cfg(feature = "flame_on")]
+#[cfg(feature = "flame")]
 pub fn flamegraph_main() {
     // This part is optional, but will give you a baseline scope for the entire run.
     let _fg = flame::start_guard("flame_example::main");
@@ -112,8 +119,8 @@ pub fn flamegraph_main() {
     using_module_path();
 
     // Here is where the flamegraph output is generated
-    // (Note the use of scopes here is only to better group the calls for each output method, and are
-    // not necessary for any of the code itself.)
+    // (Note the use of scopes here is only to better group the calls for each output method,
+    // they are not necessary for any of the code itself.)
 
     // First an HTML dump
     {
@@ -144,13 +151,13 @@ pub fn flamegraph_main() {
         // This creates a path like `flames/flame_example.json`, useful when you'd like to keep only the most recent results.
         let json_filename = "flames/flame_example.json";
         // Note the use of `File::options` to ensure the file is truncated and overwritten if it already exists, and created otherwise.
-        let json_file = std::fs::File::options()
+        let mut json_file = std::fs::File::options()
             .write(true)
             .truncate(true)
             .create(true)
             .open(json_filename)
             .expect("Unable to open/create json file.");
-        flame::dump_json(html_file).expect("Unable to dump flamegraph data to json");
+        flame::dump_json(&mut json_file).expect("Unable to dump flamegraph data to json");
     }
 
     // Finally the stdout dump:
@@ -160,8 +167,10 @@ pub fn flamegraph_main() {
     }
 }
 
-/// Version of the function indicating that this code should only be run with the `flame_on` feature.
-#[cfg(not(feature = "flame_on"))]
+/// Version of the function indicating that this code should only be run with the `flame` feature.
+/// This is useful so your entry point function can call this universally, without having to use `cfg`
+/// attributes.
+#[cfg(not(feature = "flame"))]
 pub fn flamegraph_main() {
-    println!("This function should be called with the `flame_on` feature enabled.");
+    println!("This function should be called with the `flame` feature enabled.");
 }

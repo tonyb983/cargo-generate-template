@@ -100,6 +100,12 @@ switch license {
   // completely fine. There SHOULD be no possible way to get a license string other than what we expect.
 }
 
+// Ask whether the user would like to setup an examples folder.
+let use_examples = variable::prompt("Would you like to set up an examples folder?", true);
+variable::set("use_examples", use_examples);
+log(`script use_examples = ${use_examples}`);
+log(` outer use_examples = ${variable::get("use_examples")}`);
+
 // Ask whether the user would like to setup benchmarking support. Default = true
 // Adds the `criterion` dev-dependency, and the `benches` folder.
 let use_benches = variable::prompt("Would you like to set up benchmarking support?", true);
@@ -118,11 +124,18 @@ if project_kind == "library" {
     variable::set("use_integration", false);
 }
 
-// Ask whether the user would like to setup benchmarking support. Default = true
+// Ask whether the user would like to setup flamegraph support. Default = true
 // Adds the `flame` and `flamer` optional dependencies, and the `flame_example` file.
 let use_flamegraph = variable::prompt("Would you like to set up flamegraph support and examples?", true);
 variable::set("use_flamegraph", use_flamegraph);
 log(`script use_flamegraph = ${use_flamegraph}`);
 log(` outer use_flamegraph = ${variable::get("use_flamegraph")}`);
+
+// Ask whether the user would like to setup puffin support. Default = true
+// Adds the `puffin` and `puffin_http` optional dependencies, and the `puffin_example` file.
+let use_puffin = variable::prompt("Would you like to set up puffin profiler support and examples?", true);
+variable::set("use_puffin", use_puffin);
+log(`script use_puffin = ${use_puffin}`);
+log(` outer use_puffin = ${variable::get("use_puffin")}`);
 
 log("pre-setup complete");

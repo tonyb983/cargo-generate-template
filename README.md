@@ -14,14 +14,23 @@ cargo generate tonyb983/cargo-generate-template
 
 ## Files / Folders
 - `.gitignore` - this is for the TEMPLATE, not the project created from it, it will be deleted, and `gitignore` will be renamed to `.gitignore`
-- `.github` - Used only if "yes" is selected when asked whether to use github actions, adds a "Rust Stable" workflow which will check, test, and lint the project, a "Rust Nightly" workflow which will do the same but on the nightly toolchain, and a "Coverage" workflow which will collect coverage information about the project and upload to both coveralls.io and codecov.io (either or both can be adjusted by deleting the relevant section from `.github/workflows/coverage.yml`)
+- `.github` - Empty folder serving as the endpoint for GH actions should the user opt-in to them
 - `cargo-generate.toml` - template-only file that will *not* be transferred to the newly created project
 - `Cargo.toml` - obvious, but it will be filled in with as much information as possible, as well as outlining several cool techniques
-- `LICENSE-*` - Only the selected license file will be kept and renamed accordingly
+- `gitignore` - the `gitignore` file for the newly created project, will be renamed to `.gitignore`
+- `licenses` - holds all of the license files, the selected license will be moved to the root folder and the rest will be deleted
+- `optional` - folder containing all optional features that a project can elect to use
+    - `benches/` - contains `criterion` benchmarking example
+    - `flames/` - empty folder that serves as the output directory for generated flamegraph dumps
+    - `tests/` - integration test examples
+    - `vscode/` - `PROJECT.code-workspace` file in case the user wants to use VSCode
+    - `wf/` - holds the github workflows that will be moved to `.github/workflows/` if the user elects to use them
+    - `flame_example.rs` - simple example(s) showing how to measure and dump flamegraph data
+    - `puffin_example.rs` - simple example showing how to use the `puffin` crate to do profiling
 - `post-setup.rhai` - A few post-generate commands to correctly layout the new project
+- `pre-setup.rhai` - This script moves the files needed for any optional features that are chosen
 - `README.md` - The readme for the **template**, the document you are currently reading
 - `README.PROJECT.md` - A skeleton readme for the newly generated project
-- `wf/` - Holds the workflows so that they are not run when the template is updated (there's probably a better way to do this but oh well)
 - `.vscode/` - Creates a `code-workspace` file to use with VSCode. Can be deleted if you plan on using a different editor/IDE
 
 ## Todo-List
@@ -32,6 +41,6 @@ cargo generate tonyb983/cargo-generate-template
 - [x] Add option for adding tests (integration tests)
 - [x] Add option for adding benches (with criterion probably?)
 - [x] Add flamegraph generation example
-- [ ] Add `puffin` profiling example? (similar to the flamegraph example)
-- [ ] Add option for adding examples folder?
+- [x] Add `puffin` profiling example? (similar to the flamegraph example)
+- [x] Add option for adding examples folder?
 - [ ] Find more cool badges to pad that README file :blush:

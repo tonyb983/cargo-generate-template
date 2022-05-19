@@ -26,12 +26,16 @@ let project_name = variable::get("project-name");
 log(`project_name: ${project_name}`);
 let use_vscode = variable::get("use_vscode");
 log(`use_vscode: ${use_vscode}`);
+let use_examples = variable::get("use_examples");
+log(`use_examples: ${use_examples}`);
 let use_benches = variable::get("use_benches");
 log(`use_benches: ${use_benches}`);
 let use_integration = variable::get("use_integration");
 log(`use_integration: ${use_integration}`);
 let use_flamegraph = variable::get("use_flamegraph");
 log(`use_flamegraph: ${use_flamegraph}`);
+let use_puffin = variable::get("use_puffin");
+log(`use_puffin: ${use_puffin}`);
 
 // Set project `README` file
 log("moving README");
@@ -77,6 +81,12 @@ if gh_workflows {
   file::delete(".github");
 }
 
+log("checking use_examples");
+if use_examples {
+  log("moving examples folder");
+  file::rename("optional/examples", "examples");
+}
+
 log("checking use_benches");
 if use_benches {
   log("setting up benches");
@@ -96,6 +106,12 @@ if use_flamegraph {
   log("moving flame_example.rs");
   file::rename("optional/flame_example.rs", "src/flame_example.rs");
   file::delete("flames/.gitkeep");
+}
+
+log("checking use_puffin");
+if use_puffin {
+  log("moving puffin_example.rs");
+  file::rename("optional/puffin_example.rs", "src/puffin_example.rs");
 }
 
 log("deleting optional");

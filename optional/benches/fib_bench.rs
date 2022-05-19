@@ -6,7 +6,7 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use {{project-name}}::calculate_fib;{% else %}
 pub fn calculate_fib(n: u64) -> u64 {
     {% if use_flamegraph %}
-    #[cfg(feature = "flame_on")]
+    #[cfg(feature = "flame")]
     let _fg = flame::start_guard(format!("{}::calculate_fib({})", module_path!(), n));
     {% endif %}
     match n {

@@ -13,6 +13,20 @@
     rust_2021_compatibility,
     rustdoc::all
 )]
+// Shut clippy up during tests...
+#![cfg_attr(
+    test,
+    allow(
+        clippy::pedantic,
+        clippy::all,
+        missing_docs,
+        nonstandard_style,
+        rust_2018_idioms,
+        rust_2018_compatibility,
+        rust_2021_compatibility,
+        rustdoc::all
+    )
+)]
 // This removes some of the more annoying / pointless lints:
 #![allow(
     // This is a library so there's going to be a lot of unused
@@ -64,8 +78,8 @@
 #![cfg_attr(coverage, feature(no_coverage))]
 {% endif %}
 
-{% if use_flamegraph %}
-mod flame_example;{% endif %}
+{% if use_flamegraph %}mod flame_example;{% endif %}
+{% if use_puffin %}mod puffin_example;{% endif %}
 mod utils;{%if use_benches %}
 pub use utils::calculate_fib;{% endif %}
 

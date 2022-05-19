@@ -35,12 +35,15 @@ serde = ["dep:serde"]
 #   serde = ["dep:serde", "bytes/serde"]
 # which would include the "serde" dependency, and also activate the "serde" feature of the "bytes" crate
 # See: https://doc.rust-lang.org/cargo/reference/features.html
-{% if use_flamegraph %}flame_on = ["dep:flame", "dep:flamer"]{% endif %}
+{% if use_flamegraph %}flame = ["dep:flame", "dep:flamer"]{% endif %}
+{% if use_puffin %}puffin = ["dep:puffin", "dep:puffin_http"]{% endif %}
 
 [dependencies]
-serde = { version = "1.0.137", features = ["derive"], optional = true }{% if use_flamegraph %}
+serde = { version = "*", features = ["derive"], optional = true }{% if use_flamegraph %}
 flame = { version = "*", optional = true }
-flamer = { version = "*", optional = true }{% endif %}
+flamer = { version = "*", optional = true }{% endif %}{% if use_puffin %}
+puffin = { version = "*", optional = true }
+puffin_http = { version = "*", optional = true }{% endif %}
 
 # See: https://doc.rust-lang.org/cargo/reference/manifest.html#the-badges-section
 [badges]

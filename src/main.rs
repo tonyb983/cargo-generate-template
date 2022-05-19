@@ -13,6 +13,20 @@
     rust_2021_compatibility,
     rustdoc::all
 )]
+// Shut clippy up during tests...
+#![cfg_attr(
+    test,
+    allow(
+        clippy::pedantic,
+        clippy::all,
+        missing_docs,
+        nonstandard_style,
+        rust_2018_idioms,
+        rust_2018_compatibility,
+        rust_2021_compatibility,
+        rustdoc::all
+    )
+)]
 // This removes some of the more annoying / pointless lints:
 #![allow(
     // I will remove this later on, but for now it's less pointlessly annoying
@@ -62,8 +76,8 @@
 #![cfg_attr(coverage, feature(no_coverage))]
 {% endif %}
 
-{% if use_flamegraph %}
-mod flame_example;{% endif %}
+{% if use_flamegraph %}mod flame_example;{% endif %}
+{% if use_puffin %}mod puffin_example;{% endif %}
 mod utils;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

@@ -15,7 +15,7 @@
 [![Rust Report Card](https://rust-reportcard.xuri.me/badge/github.com/{{gh_username}}/{{project-name}})](https://rust-reportcard.xuri.me/report/github.com/{{gh_username}}/{{project-name}})
 [![Coverage Status](https://coveralls.io/repos/github/{{gh_username}}/{{project-name}}/badge.svg?branch=main)](https://coveralls.io/github/{{gh_username}}/{{project-name}}?branch=main)
 [![codecov](https://codecov.io/gh/{{gh_username}}/{{project-name}}/branch/main/graph/badge.svg?token=0P01LCVPYC)](https://codecov.io/gh/{{gh_username}}/{{project-name}})
-[![](https://tokei.rs/b1/github/tonyb983/REPOSITORY)](https://github.com/{{gh_username}}/{{project-name}})
+[![](https://tokei.rs/b1/github/{{gh_username}}/{{project-name}})](https://github.com/{{gh_username}}/{{project-name}})
 ![GitHub last commit](https://img.shields.io/github/last-commit/{{gh_username}}/{{project-name}})
 
 ## Project Description
