@@ -3,7 +3,7 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 {% if is_library %}
-use {{project-name}}::calculate_fib;{% else %}
+use {{crate_name}}::calculate_fib;{% else %}
 pub fn calculate_fib(n: u64) -> u64 {
     {% if use_flamegraph %}
     #[cfg(feature = "flame")]

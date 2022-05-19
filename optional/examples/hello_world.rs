@@ -2,7 +2,9 @@
 //!
 //! small placeholder for future actual examples
 
-use {{project-name}};
+#[allow(unused_imports)]
+#[allow(clippy::single_component_path_imports)]
+use {{crate_name}};
 
 fn main() {
     println!("This is the basic usage example for {{project-name}}!");

@@ -5,7 +5,7 @@
 //! always follow the same order so as to be more consistent.
 
 fn log(x) {
-    const DEBUG = false;
+    const DEBUG = true;
     if DEBUG {
         debug(x);
     }
@@ -29,6 +29,13 @@ let LICENSES = #{
 
 // Here we set up the conditional variables that determine what files are kept and what segments are inserted
 // into the templated files.
+let project_name = variable::get("project-name");
+log(`project name = ${project_name}`);
+let crate_name = project_name;
+crate_name.replace("-", "_");
+crate_name.replace(" ", "_");
+log(`crate name = ${crate_name}`);
+variable::set("crate_name", crate_name);
 
 // Prompt for project type, this is done by cargo generate but I live having control so whatever. Default = 'library'
 // Originally: placeholders.is_library = { type = "bool", prompt = "...", default = true }

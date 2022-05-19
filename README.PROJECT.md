@@ -23,7 +23,7 @@
 ## Examples
 Basic Usage:
 ```rust
-# use {{project-name}}::*;
+# use {{crate_name}}::*;
 # fn main() {
     todo!("Write some examples!");
 # }

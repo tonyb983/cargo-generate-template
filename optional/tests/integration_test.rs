@@ -1,6 +1,8 @@
 //! Barebones integration test skeleton.
 
-use {{project-name}};
+#[allow(unused_imports)]
+#[allow(clippy::single_component_path_imports)]
+use {{crate_name}};
 
 #[test]
 #[should_panic] // Remove this when the todo! is gone
