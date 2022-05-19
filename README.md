@@ -43,4 +43,5 @@ cargo generate tonyb983/cargo-generate-template
 - [x] Add flamegraph generation example
 - [x] Add `puffin` profiling example? (similar to the flamegraph example)
 - [x] Add option for adding examples folder?
+- [ ] Add support for workspaces? (might be somewhat complex, maybe it should be a separate template?)
 - [ ] Find more cool badges to pad that README file :blush:
